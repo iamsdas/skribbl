@@ -39,7 +39,7 @@ io.on('connection', (socket) => {
 		// send client self id and host id
 		socket.emit('self-info', { id: socket.id, host: host.get(roomName) })
 		//update lobby
-		io.to(roomName).emit('update-lobby', players.get(roomName))
+		io.to(roomName).emit('update-list', players.get(roomName))
 	})
 
 	socket.on('incr-score', (score) => {
@@ -54,6 +54,13 @@ io.on('connection', (socket) => {
 	})
 
 	socket.on('change-round', () => { changeRound(socket.roomName) })
+
+	socket.on('disconnect', () => {
+		var arr = players.get(socket.roomName)
+		players.set(socket.roomName, arr.filter((player) => player.id != socket.id))
+		io.to(socket.roomName).emit('update-host', [...io.sockets.adapter.rooms.get(roomName)][0])
+		io.to(socket.roomName).emit('update-list', players.get(socket.roomName))
+	})
 })
 
 function changeRound(roomName) {

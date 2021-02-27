@@ -19,7 +19,7 @@
 			document.getElementById('l').innerHTML = socket.name;
 			socket.on('game-over', () => { console.log('over'); })
 			socket.on('started', () => { console.log('started'); })
-			socket.on('update-lobby', (data) => { console.log(data); })
+			socket.on('update-list', (data) => { console.log(data); })
 			socket.on('self-info', ({ id, host }) => {
 				console.log(`${ id }, ${ host }`)
 			})
