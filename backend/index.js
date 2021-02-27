@@ -32,10 +32,12 @@ io.on('connection', (socket) => {
 			host.set(roomName, socket.id)
 			players.set(roomName, [])
 		}
-		//update player list of room
+		// update player list of room
 		players.set(roomName, players.get(roomName).concat({ id: socket.id, name: name }))
-		//debug stuff
-		console.log(`${ name } joined ${ roomName }`)
+		// debug stuff
+		console.log(`${ name } joined ${ roomName }, host: ${ host.get(roomName) }`)
+		// send client self id and host id
+		socket.emit('self-info', { id: socket.id, host: host.get(roomName) })
 		//update lobby
 		io.to(roomName).emit('update-lobby', players.get(roomName))
 	})

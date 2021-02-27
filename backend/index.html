@@ -20,6 +20,9 @@
 			socket.on('game-over', () => { console.log('over'); })
 			socket.on('started', () => { console.log('started'); })
 			socket.on('update-lobby', (data) => { console.log(data); })
+			socket.on('self-info', ({ id, host }) => {
+				console.log(`${ id }, ${ host }`)
+			})
 			function join() {
 				console.log(document.getElementById('nm').value);
 				socket.emit('join-room', { name: document.getElementById('nm').value, roomName: 'world' });
